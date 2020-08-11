@@ -21,6 +21,16 @@ const frameIn = [
         },
         component: _import('system/index')
       },
+      // 首页
+      {
+        path: 'user',
+        name: 'user',
+        meta: {
+          title: '用户管理',
+          auth: true
+        },
+        component: _import('system/user')
+      },
       // 演示页面
       {
         path: 'page1',

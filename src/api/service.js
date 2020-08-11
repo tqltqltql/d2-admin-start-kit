@@ -24,8 +24,9 @@ function createService () {
     response => {
       // dataAxios 是 axios 返回数据中的 data
       const dataAxios = response.data
+      console.log(dataAxios)
       // 这个状态码是和后端约定的
-      const { code } = dataAxios
+      const code = 0
       // 根据 code 进行判断
       if (code === undefined) {
         // 如果没有 code 代表这不是项目后端开发的接口 比如可能是 D2Admin 请求最新版本
@@ -35,7 +36,10 @@ function createService () {
         switch (code) {
           case 0:
             // [ 示例 ] code === 0 代表没有错误
-            return dataAxios.data
+            // return dataAxios.data // d2-admin的默认返回
+            // 减页数 后台页数是从零开始的
+            // dataAxios.data.totalElements = dataAxios.data.totalElements - dataAxios.data.size
+            return dataAxios // 去掉.data
           case 'xxx':
             // [ 示例 ] 其它和后台约定的 code
             errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`)

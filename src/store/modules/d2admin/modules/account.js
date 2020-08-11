@@ -17,7 +17,11 @@ export default {
       username = '',
       password = ''
     } = {}) {
-      const res = await api.SYS_USER_LOGIN({ username, password })
+      let res = await api.SYS_USER_LOGIN({ username, password })
+      console.log(1111111111)
+      console.log(res)
+      console.log(1111111111)
+      res = res.data // 增加这一句
       // 设置 cookie 一定要存 uuid 和 token 两个 cookie
       // 整个系统依赖这两个数据进行校验和存储
       // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复

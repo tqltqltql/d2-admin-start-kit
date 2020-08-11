@@ -18,6 +18,13 @@ function supplementPath (menu) {
 export const menuHeader = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
   {
+    title: '系统管理',
+    icon: 'folder-o',
+    children: [
+      { path: '/user', title: '用户管理' }
+    ]
+  },
+  {
     title: '页面',
     icon: 'folder-o',
     children: [
@@ -30,6 +37,13 @@ export const menuHeader = supplementPath([
 
 export const menuAside = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
+  {
+    title: '系统管理',
+    icon: 'folder-o',
+    children: [
+      { path: '/user', title: '用户管理' }
+    ]
+  },
   {
     title: '页面',
     icon: 'folder-o',
