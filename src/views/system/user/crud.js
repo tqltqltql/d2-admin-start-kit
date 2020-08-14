@@ -1,4 +1,5 @@
 // import { GetOrgList } from './api'
+
 export const crudOptions = (vm) => { // vm即this
   return {
     format: {
@@ -9,6 +10,23 @@ export const crudOptions = (vm) => { // vm即this
       }
     },
     columns: [
+      {
+        title: '头像',
+        key: 'avatar',
+        type: 'avatar-uploader',
+        width: 120,
+        form: {
+          component: {
+            props: {
+              // value:
+              uploader: {
+                type: 'form'
+                // action: 'http://localhost:8080/platform/upload'
+              }
+            }
+          }
+        }
+      },
       {
         title: '姓名',
         key: 'userName',
@@ -55,11 +73,10 @@ export const crudOptions = (vm) => { // vm即this
         },
         valueResolve (row, key) {
           console.log('resolve')
-          console.log(row)
-          if (row.sysOrg) {
+          if (typeof row.sysOrg.id === 'number') {
+          } else {
             row.sysOrg.id = row.sysOrg.orgName
           }
-          console.log(row)
           console.log('resolve')
           // 组件中传回的值也需要分解成row中多个字段的值，用于提交给后台。
           // if (row.mobileValue != null) {

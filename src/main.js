@@ -86,65 +86,83 @@ Vue.use(D2pFullEditor, {
 })
 Vue.use(D2pDemoExtend)
 Vue.use(D2pFileUploader)
-Vue.use(D2pUploader, {
-  defaultType: 'cos',
-  cos: {
-    domain: 'https://d2p-demo-1251260344.cos.ap-guangzhou.myqcloud.com',
-    bucket: 'd2p-demo-1251260344',
-    region: 'ap-guangzhou',
-    secretId: '', //
-    secretKey: '', // 传了secretKey 和secretId 代表使用本地签名模式（不安全，生产环境不推荐）
-    getAuthorization  (custom) { // 不传secretKey代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
-      return request({
-        url: '/upload/cos/getAuthorization',
-        method: 'get'
-      }).then(ret => {
-        // 返回结构如下
-        // ret.data:{
-        //   TmpSecretId,
-        //   TmpSecretKey,
-        //   XCosSecurityToken,
-        //   ExpiredTime, // SDK 在 ExpiredTime 时间前，不会再次调用 getAuthorization
-        // }
-        return ret.data
-      })
+Vue.use(D2pUploader, { // 上传全局配置参数，具体配置参考[d2p-uploader]
+  defaultType: 'form',
+  form: { // 本地服务端上传
+    action: process.env.VUE_APP_API + '/platform/upload', // 上传url
+    name: 'file', // 上传时文件的参数名
+    data: {}, // 上传附加参数
+    headers: {}, // 上传请求头
+    successHandle (res) { // 上传成功后，后台返回结果处理
+      console.log(12341234)
+      console.log(res)
+      console.log(12341234)
+      return { url: res.data } // data是该文件的url
     }
   },
-  alioss: {
-    domain: 'https://d2p-demo.oss-cn-shenzhen.aliyuncs.com',
-    bucket: 'd2p-demo',
-    region: 'oss-cn-shenzhen',
-    accessKeyId: '',
-    accessKeySecret: '',
-    getAuthorization  (custom, context) { // 不传accessKeySecret代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
-      return request({
-        url: '/upload/alioss/getAuthorization',
-        method: 'get'
-      }).then(ret => {
-        return ret.data
-      })
-    },
-    sdkOpts: { // sdk配置
-      secure: true // 默认为非https上传,为了安全，设置为true
-    }
-  },
-  qiniu: {
-    bucket: 'd2p-demo',
-    getToken (custom) {
-      return request({
-        url: '/upload/qiniu/getToken',
-        method: 'get'
-      }).then(ret => {
-        return ret.data // {token:xxx,expires:xxx}
-      })
-    },
-    domain: 'http://d2p.file.veryreader.com'
-  },
-  form: {
-    action: process.env.VUE_APP_API + 'upload/form/upload',
-    name: 'file'
-  }
+  alioss: {},
+  cos: {},
+  qiniu: {}
 })
+// Vue.use(D2pUploader, {
+//   defaultType: 'cos',
+//   cos: {
+//     domain: 'https://d2p-demo-1251260344.cos.ap-guangzhou.myqcloud.com',
+//     bucket: 'd2p-demo-1251260344',
+//     region: 'ap-guangzhou',
+//     secretId: '', //
+//     secretKey: '', // 传了secretKey 和secretId 代表使用本地签名模式（不安全，生产环境不推荐）
+//     getAuthorization  (custom) { // 不传secretKey代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
+//       return request({
+//         url: '/upload/cos/getAuthorization',
+//         method: 'get'
+//       }).then(ret => {
+//         // 返回结构如下
+//         // ret.data:{
+//         //   TmpSecretId,
+//         //   TmpSecretKey,
+//         //   XCosSecurityToken,
+//         //   ExpiredTime, // SDK 在 ExpiredTime 时间前，不会再次调用 getAuthorization
+//         // }
+//         return ret.data
+//       })
+//     }
+//   },
+//   alioss: {
+//     domain: 'https://d2p-demo.oss-cn-shenzhen.aliyuncs.com',
+//     bucket: 'd2p-demo',
+//     region: 'oss-cn-shenzhen',
+//     accessKeyId: '',
+//     accessKeySecret: '',
+//     getAuthorization  (custom, context) { // 不传accessKeySecret代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
+//       return request({
+//         url: '/upload/alioss/getAuthorization',
+//         method: 'get'
+//       }).then(ret => {
+//         return ret.data
+//       })
+//     },
+//     sdkOpts: { // sdk配置
+//       secure: true // 默认为非https上传,为了安全，设置为true
+//     }
+//   },
+//   qiniu: {
+//     bucket: 'd2p-demo',
+//     getToken (custom) {
+//       return request({
+//         url: '/upload/qiniu/getToken',
+//         method: 'get'
+//       }).then(ret => {
+//         return ret.data // {token:xxx,expires:xxx}
+//       })
+//     },
+//     domain: 'http://d2p.file.veryreader.com'
+//   },
+//   form: {
+//     action: process.env.VUE_APP_API + 'upload/form/upload',
+//     name: 'file'
+//   }
+// })
 
 new Vue({
   router,
